@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  dc-app:
+    #   Demo 用所以直接使用 npm run start:dev
+    #   實際部署可以將被註解掉的 build, command 打開，並將下面啟用的 image, command, volumes 註解掉
+    #   此註解起來的段落未實際測試過，但是大致上的概念就是 執行 npm run build && node dist/main.js, 可參照 Dockerfile
+    image: node:14.15.4-alpine3.12
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    command: "node /home/node/app/dist/main.js"
+    command: "npm run --prefix /home/node/app start:dev"
+    container_name: dc-app
+    volumes:
+      - .:/home/node/app
+    ports:
+      - "40003:3000"
+    depends_on:
+      - dc-redis
+    links:
+      - dc-redis:redis
+    networks:
+      - dc-network
+
+  dc-redis:
+    image: redis:6.0.10-alpine3.13
+    container_name: dc-redis
+    expose:
+      - 6379
+    networks:
+      - dc-network
+
+networks:
+  dc-network:
+    driver: bridge
