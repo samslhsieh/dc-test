@@ -12,10 +12,10 @@ export class RedisService {
 
     const redisConfig = {
       host:
-        !process.env.NODE_ENV ||
-        (process.env.NODE_ENV && process.env.NODE_ENV.includes('test'))
-          ? '127.0.01'
+        process.env.NODE_ENV && process.env.NODE_ENV.includes('test')
+          ? '127.0.0.1'
           : process.env.REDIS_HOST || 'redis',
+      port: Number(process.env.REDIS_PORT || 6379),
       connect_timeout: 1000 * 60,
     }
 
