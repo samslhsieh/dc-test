@@ -5,7 +5,7 @@
 1. 為了模糊資訊，部分名詞會取用暱稱，EX: DC
 
 
-2. Demo: https://dc-test-api.samhsieh.xyz
+2. Demo: https://dc-test-api.samhsieh.xyz/counters
 
 
 3. 此 Demo 部署在 AWS 中
@@ -23,27 +23,27 @@
    再加上其主要是 in-memory 的形式執行，在效能上來說會比其他的 NoSQL 來得好
    ```
 
-5. RateLimit 策略為
+5. RateLimit 策略
    ```
    第一筆 Request 開始算起 (該時間點稱 n)， 60 秒內請求總計超過 60 次即會啟動 RateLimit。
    
    若 n + 60 秒後不論是否觸發 RateLimit，皆會重置計數器
    ```
    
-6. 此 Demo 不支援 IPv6
+7. 此 Demo 不支援 IPv6
 
 
 ## Installation
 
 ### Requirements
 
-1. Docker
+1. Docker 19.03.8
 
 
-2. NPM 6
+2. NPM 6.14.5
 
 
-### Getting started
+### Getting Started
 1. 切換至專案並安裝所需的套件 
    ```
    $ cd dc-test && npm ci
@@ -75,8 +75,14 @@ $ docker-compose restart
 
 ## Call API
 ### Curl
+#### `有` RateLimit 的 Endpoint
 ```
 $ curl --location --request GET 'https://dc-test-api.samhsieh.xyz/counters'
+```
+
+#### `沒有` RateLimit 的 Endpoint
+```
+$ curl --location --request GET 'https://dc-test-api.samhsieh.xyz'
 ```
 
 ## Test
