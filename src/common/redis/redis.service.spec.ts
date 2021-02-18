@@ -22,11 +22,28 @@ describe('RedisService', () => {
     expect(service).toBeDefined()
   })
 
-  it('successfully set and get redis', async () => {
-    const value = String(Math.round(Math.random() * 1000))
-    await service.client.set('testKey', value)
+  describe('successfully set and get value', () => {
+    for (let i = 0; i < 5; i++) {
+      const value = Math.round(Math.random() * 10000)
+      const key = `test${i}-${value}`
 
-    const exceptValue = await service.client.get('testKey')
-    expect(value).toBe(exceptValue)
+      it(`key: ${key}, value: ${value}`, async () => {
+        await service.client.set(key, value)
+
+        const exceptValue = await service.client.get(key)
+        expect(exceptValue).toBe(String(value))
+      })
+    }
+  })
+
+  it('successfully add value ', async () => {
+    const value = Math.round(Math.random() * 10000)
+    const key = `test-${value}`
+
+    await service.client.set(key, value)
+    await service.client.incrby(key, 1)
+
+    const exceptValue = await service.client.get(key)
+    expect(exceptValue).toBe(String(value + 1))
   })
 })

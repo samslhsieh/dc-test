@@ -44,7 +44,10 @@ describe('CountersController (e2e)', () => {
 
     mockedRedisGet.mockImplementationOnce(async () => lastCount)
 
-    const resp = await request(app.getHttpServer()).get('/counters').query({})
+    const resp = await request(app.getHttpServer())
+      .get('/counters')
+      .set('x-forwarded-for', '1.2.3.4')
+      .query({})
 
     expect(resp.status).toBe(HttpStatus.OK)
     expect(resp.body).toEqual({ numberOfRequests: lastCount + 1 })
@@ -61,7 +64,10 @@ describe('CountersController (e2e)', () => {
     mockedRedisGet.mockImplementationOnce(async () => lastCount)
     mockedRedisIncrby.mockImplementationOnce(async () => currentCount + 1)
 
-    const resp = await request(app.getHttpServer()).get('/counters').query({})
+    const resp = await request(app.getHttpServer())
+      .get('/counters')
+      .set('x-forwarded-for', '1.2.3.4')
+      .query({})
 
     expect(resp.status).toBe(HttpStatus.OK)
     expect(resp.body).toEqual({ numberOfRequests: currentCount })
@@ -78,7 +84,10 @@ describe('CountersController (e2e)', () => {
     mockedRedisGet.mockImplementationOnce(async () => lastCount)
     mockedRedisIncrby.mockImplementationOnce(async () => currentCount + 1)
 
-    const resp = await request(app.getHttpServer()).get('/counters').query({})
+    const resp = await request(app.getHttpServer())
+      .get('/counters')
+      .set('x-forwarded-for', '1.2.3.4')
+      .query({})
 
     expect(resp.status).toBe(HttpStatus.TOO_MANY_REQUESTS)
     expect(resp.body).toEqual({ message: 'Forbidden', statusCode: 429 })

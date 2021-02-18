@@ -25,8 +25,10 @@ export class RateLimitMiddleware implements NestMiddleware {
     next: NextFunction,
   ) {
     try {
-      // TODO: support IPv6
-      const ip = requestIp.getClientIp(req).split(':')[3]
+      // TODO: uncomment split if want to support IPv6, process IPv6 address
+      // const ip = requestIp.getClientIp(req).split(':')[3]
+
+      const ip = requestIp.getClientIp(req)
       this.logger.debug(`request client IP : ${ip}`)
 
       let amount = await this.redisService.client.get(ip)

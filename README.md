@@ -18,7 +18,7 @@
    此 Project 中的 RateLimit 主要是比較 Client 端 IP 在固定時間內的請求次數。
     
    所以可以將數據存成 `key(ip): value(amount)` 的形式，並加上 `expiredTime`，
-   不太需要 RDS DB 那些強大但是複雜的關聯式查詢。
+   不太需要 RDB 那些強大但是複雜的關聯式查詢。
     
    再加上其主要是 in-memory 的形式執行，在效能上來說會比其他的 NoSQL 來得好
    ```
